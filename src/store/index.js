@@ -1,43 +1,40 @@
 import { defineStore } from 'pinia'
-import {ref, inject,watch } from 'vue'
+import {ref, inject } from 'vue'
 
 
-const useStore = defineStore('search-filters', () => {
+const useStore = defineStore('cards', () => {
   const api = inject('api')
-  let cars = ref([])
-  let perPage = ref(9)
-  let current_page = ref(null)
-  let last_page = ref(null)
-  let totalCars = ref(0)
-  let showCars = ref(0)
-  let search = ref('')
+  let allCards = ref([])
+  let showCards = ref([])
+  let cart = ref([])
  
 
-  const searchCars =  async () =>{   
-    let data, meta
-    if(search.value.trim() != ''){
-      ({data, meta} = await api.searchCars(search.value, perPage.value, current_page.value))
-    }else{
-      ({data, meta} = await api.fetchCars(perPage.value, current_page.value))
-    }
-    totalCars.value = meta.total
-    current_page.value = meta.current_page
-    last_page.value = meta.last_page
-    showCars.value = meta.to
-    cars.value = data
+  const fetchCards =  async () =>{   
+    let  data = await api.fetchCars()
+    allCards.value = data
+    showCards.value = allCards.value.slice(0, 4)
   }
 
+  const addToCart = (card) =>{
+    cart.value.push(card)
+  }
 
+  const removeFromCart = (index) =>{
+    cart.value.splice(index,1)
+  }
+
+  const loadCards = (i) =>{
+    showCards.value.push(...allCards.value.slice(i , i+4))
+  }
 
   return {
-    cars,
-    search,
-    perPage,
-    current_page,
-    last_page,
-    totalCars,
-    showCars,
-    searchCars
+    allCards,
+    showCards,
+    cart,
+    fetchCards,
+    addToCart,
+    removeFromCart,
+    loadCards
   }
 })
 

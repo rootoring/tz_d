@@ -1,41 +1,20 @@
 <template>
   <div class="card">
-    <img
-      class="card__img"
-      :src="props.data?.photo?.url"
-      :alt="props.data.vehicle_name"
-    />
-    <p class="card__title">{{ props.data.vehicle_name || "CAR" }}</p>
-    <p class="card__subtitle">{{ props.data.vin }}</p>
+    <img class="card__img" src="avatar.svg" :alt="props.data.title" />
+    <p class="card__title">{{ props.data.title }}</p>
+    <p class="card__subtitle">{{ props.data.description }}</p>
     <div class="card__footer">
-      <div
-        class="card__count"
-        :class="props.data.id < 30 ? '' : 'card__count-success'"
-      >
-        <svg
-          v-show="props.data.id >= 30"
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-        >
-          <path
-            d="M13.3333 4L5.99999 11.3333L2.66666 8"
-            stroke="#7FC75E"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        {{ props.data.id }}/30
-      </div>
-      <div class="card__time">{{ props.data.uploads }} days left</div>
+      <div class="card__price">{{ props.data.price }}₽</div>
+      <button class="card__cart" @click="store.addToCart(props.data)">
+        <img src="cart.svg" />
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
+import useStore from "../store";
+const store = useStore();
 const props = defineProps({
   data: { type: Object, required: true },
 });
@@ -45,18 +24,20 @@ const props = defineProps({
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  background: #f3f6f8;
-  padding: 23px;
+  background: #fff;
+  box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.2);
+  padding-bottom: 80px;
+  position: relative;
+  width: 280px;
 
   .card__img {
     width: 100%;
-    height: 165px;
+    height: 280px;
     object-fit: cover;
-    border-radius: 8px;
   }
 
   .card__title {
-    padding: 12px 0;
+    padding: 20px 20px 10px 20px;
     color: #293148;
     font-size: 20px;
     font-style: normal;
@@ -64,45 +45,48 @@ const props = defineProps({
     line-height: 22px;
   }
   .card__subtitle {
-    color: rgba(41, 49, 72, 0.6);
-    font-size: 15px;
+    padding: 0 20px;
+    color: #333;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
+    font-weight: 400;
+    line-height: 26px;
+    opacity: 0.5;
+    height: 100px;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .card__footer {
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    border-top: #e4e4e4 2px solid;
-    padding-top: 18px;
-    margin-top: 18px;
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
 
-    .card__count {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 6px;
-      background: #ededed;
-      padding: 4px 14px;
-      color: rgba(41, 49, 72, 0.8);
-      text-align: center;
-      font-size: 15px;
+    .card__price {
+      text-transform: uppercase;
+      color: #333;
+      font-family: Roboto;
+      font-size: 18px;
       font-style: normal;
-      font-weight: 700;
-      line-height: 22px;
+      font-weight: 400;
+      line-height: 26px; /* 144.444% */
     }
-    .card__count-success {
-      background: #e4f5dd;
-    }
-    .card__time {
-      color: rgba(41, 49, 72, 0.6);
-      font-size: 15px;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 16px;
+    .card__cart {
+      background: none;
+      transition: 0.3s ease-in-out;
+      &:hover {
+        transform: scale(1.2);
+      }
+      &:active {
+        transform: scale(0.8);
+      }
     }
   }
 }

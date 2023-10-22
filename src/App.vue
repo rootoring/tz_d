@@ -1,28 +1,20 @@
 <template>
-  <div class="app">
-    <asidePanel />
-    <div class="container">
-      <headerBlock />
-      <main>
-        <router-view />
-      </main>
-    </div>
+  <div class="container">
+    <headerBlock />
+    <main>
+      <router-view />
+    </main>
   </div>
 </template>
 <script setup>
-import asidePanel from "./components/asidePanel.vue";
 import headerBlock from "./components/headerBlock.vue";
 </script>
 <style lang="scss">
-.app {
-  display: flex;
-
-  .container {
-    width: 90%;
-
-    main {
-      padding: 30px;
-    }
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  main {
+    padding: 0 20px;
   }
 }
 </style>
