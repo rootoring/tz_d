@@ -30,7 +30,6 @@
           </svg>
         </span>
         <div class="header-block__user">
-          <img class="header-block__avatar" src="avatar.png" alt="avatar" />
           <p class="header-block__user-name">John Doe</p>
         </div>
         <select class="header-block__country select__block">
